@@ -2,6 +2,8 @@ hw
 pp
 pi
 merge
+ex1
+pmv
 
 # Prerequisites
 *.d
