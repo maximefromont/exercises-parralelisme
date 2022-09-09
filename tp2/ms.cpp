@@ -52,8 +52,13 @@ int main(int argc, char** argv) {
         //mergesort(a+(3*(size/4)), size/4, temp + (3*(size/4)));
       }
     }
-
-    
+    #pragma omp sections
+    {
+      #pragma omp section
+      {
+      
+      }
+    }
   }
 
   //sort
