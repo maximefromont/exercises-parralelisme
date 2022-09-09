@@ -2,68 +2,32 @@
 #include <unistd.h>
 #include "omp.h"
 
-int calculDeux()
-{
-  sleep(2);
-  return 2;
-}
-
-int calculTrois()
-{
-  sleep(3);
-  return 3;
-}
-
-int calculQuatre()
-{
-  sleep(4);
-  return 4;
-}
-
 int main(int argc, char **argv)
 {
 
-  int N = 10;
-  float array[N];   
-  
-  for(float i = 0; i < N; i++)
-  {
-    array[i] = i;  
-  }
-
+  int N = 5;
+  float array[N];
   float somme = 0.f;
-  for(int i = 0; i < N; i++)
+  
+  #pragma omp parallel 
   {
-    somme = somme + array[i]
-  }
-  printf("La somme est de %f", somme);
 
-  int deux, trois, quatre, cinq, neuf;
-  printf("avant parallel\n");
-#pragma omp parallel num_threads(10)
-  {
-    int thid = omp_get_thread_num();
-    int nthreads = omp_get_num_threads();
-    printf("hello from %d/%d\n", thid, nthreads);
-#pragma omp sections
+    #pragma opm for
+    for(int i = 0; i < N; i++)
     {
-#pragma omp section
-      {
-        quatre = calculQuatre();
-      }
-#pragma omp section
-      {
-        deux = calculDeux();
-      }
-#pragma omp section
-      {
-        trois = calculTrois();
-      }
+      array[i] = i;  
     }
+
+    #pragma opm for
+    for(int i = 0; i < N; i++)
+    {
+      somme = somme + array[i];
+    }
+
   }
-  cinq = deux + trois;
-  neuf = deux + trois + quatre;
-  printf("cinq = %d\n", cinq);
-  printf("neuf = %d\n", neuf);
+  
+  printf("La somme est de %f\n", somme);
+  printf("La somme est censé être %d\n", ((N-1)*N)/2);
+
   return 0;
 }
